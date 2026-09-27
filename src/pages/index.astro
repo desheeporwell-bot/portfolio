@@ -1,0 +1,309 @@
+---
+import Base from '../layouts/Base.astro';
+import {
+  profile,
+  experience,
+  leadership,
+  projects,
+  education,
+  certifications,
+  skills,
+} from '../data/profile';
+
+const nav = [
+  ['About', '#about'],
+  ['Experience', '#experience'],
+  ['Projects', '#projects'],
+  ['Leadership', '#leadership'],
+  ['Education', '#education'],
+  ['Skills', '#skills'],
+  ['Contact', '#contact'],
+];
+---
+
+<Base
+  title={`${profile.shortName} — ${profile.title}`}
+  description={profile.tagline}
+>
+  <header class="topbar">
+    <div class="container topbar-inner">
+      <a href="#top" class="brand">{profile.shortName}</a>
+      <nav>
+        {nav.map(([label, href]) => <a href={href}>{label}</a>)}
+      </nav>
+    </div>
+  </header>
+
+  <main id="top">
+    <section class="hero">
+      <div class="container">
+        <p class="eyebrow">{profile.location}</p>
+        <h1>{profile.name}</h1>
+        <p class="role">{profile.title}</p>
+        <p class="tagline">{profile.tagline}</p>
+        <div class="cta">
+          <a class="btn primary" href={`mailto:${profile.email}`}>Email me</a>
+          <a class="btn" href={profile.linkedin} target="_blank" rel="noopener noreferrer">LinkedIn</a>
+        </div>
+      </div>
+    </section>
+
+    <section id="about">
+      <div class="container">
+        <h2 class="section-title">About</h2>
+        <div class="prose">
+          {profile.summary.map((p) => <p>{p}</p>)}
+        </div>
+      </div>
+    </section>
+
+    <section id="experience">
+      <div class="container">
+        <h2 class="section-title">Experience</h2>
+        <ol class="timeline">
+          {experience.map((item) => (
+            <li>
+              <div class="tl-meta">
+                <span class="tl-period">{item.period}</span>
+                <span class="muted">{item.location}</span>
+              </div>
+              <div class="tl-body">
+                <h3>{item.role}</h3>
+                <p class="org">{item.org}</p>
+                {item.bullets.length > 0 && (
+                  <ul>
+                    {item.bullets.map((b) => <li>{b}</li>)}
+                  </ul>
+                )}
+              </div>
+            </li>
+          ))}
+        </ol>
+      </div>
+    </section>
+
+    <section id="projects">
+      <div class="container">
+        <h2 class="section-title">Projects</h2>
+        <div class="grid">
+          {projects.map((p) => (
+            <article class="card">
+              <header>
+                <h3>
+                  {p.link ? (
+                    <a href={p.link} target="_blank" rel="noopener noreferrer">{p.name} ↗</a>
+                  ) : (
+                    p.name
+                  )}
+                </h3>
+                <p class="muted small">{p.role}</p>
+              </header>
+              <p>{p.description}</p>
+              {p.highlights.length > 0 && (
+                <ul class="small">
+                  {p.highlights.map((h) => <li>{h}</li>)}
+                </ul>
+              )}
+              <footer>
+                {p.tags.map((t) => <span class="tag">{t}</span>)}
+              </footer>
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <section id="leadership">
+      <div class="container">
+        <h2 class="section-title">Leadership</h2>
+        <ol class="timeline">
+          {leadership.map((item) => (
+            <li>
+              <div class="tl-meta">
+                <span class="tl-period">{item.period}</span>
+              </div>
+              <div class="tl-body">
+                <h3>{item.role}</h3>
+                <p class="org">{item.org}</p>
+                {item.bullets.length > 0 && (
+                  <ul>
+                    {item.bullets.map((b) => <li>{b}</li>)}
+                  </ul>
+                )}
+              </div>
+            </li>
+          ))}
+        </ol>
+      </div>
+    </section>
+
+    <section id="education">
+      <div class="container">
+        <h2 class="section-title">Education & Certifications</h2>
+        <div class="two-col">
+          <div>
+            {education.map((e) => (
+              <div class="edu">
+                <h3>{e.degree}</h3>
+                <p class="org">{e.school}</p>
+                <p class="muted small">
+                  {e.period}{e.period && e.note ? ' · ' : ''}{e.note}
+                </p>
+              </div>
+            ))}
+          </div>
+          <div>
+            <ul class="certs">
+              {certifications.map((c) => <li>{c}</li>)}
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="skills">
+      <div class="container">
+        <h2 class="section-title">Skills</h2>
+        <div class="two-col">
+          <div>
+            <h3 class="sub">Core</h3>
+            <ul class="pill-list">
+              {skills.core.map((s) => <li>{s}</li>)}
+            </ul>
+          </div>
+          <div>
+            <h3 class="sub">Currently building</h3>
+            <ul class="pill-list developing">
+              {skills.developing.map((s) => <li>{s}</li>)}
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="contact">
+      <div class="container">
+        <h2 class="section-title">Contact</h2>
+        <ul class="contact">
+          <li><span class="muted">Email</span><a href={`mailto:${profile.email}`}>{profile.email}</a></li>
+          <li><span class="muted">Phone</span><a href={`tel:${profile.phoneHref}`}>{profile.phone}</a></li>
+          <li><span class="muted">LinkedIn</span><a href={profile.linkedin} target="_blank" rel="noopener noreferrer">{profile.linkedinLabel}</a></li>
+          <li><span class="muted">Location</span><span>{profile.location}</span></li>
+        </ul>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <span class="muted small">© {new Date().getFullYear()} {profile.name}</span>
+    </div>
+  </footer>
+</Base>
+
+<style>
+  .topbar {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background: rgba(15, 20, 16, 0.85);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--line);
+  }
+  .topbar-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 60px;
+    gap: 1rem;
+  }
+  .brand { font-weight: 700; color: var(--text); letter-spacing: 0.02em; }
+  nav { display: flex; gap: 1.1rem; flex-wrap: wrap; justify-content: flex-end; }
+  nav a { color: var(--muted); font-size: 0.9rem; }
+  nav a:hover { color: var(--text); text-decoration: none; }
+
+  .hero { padding: 6rem 0 5rem; background: radial-gradient(ellipse at top left, #1b2a1f 0%, var(--bg) 60%); }
+  .eyebrow { color: var(--accent-2); font-size: 0.85rem; letter-spacing: 0.1em; text-transform: uppercase; margin: 0 0 0.75rem; }
+  .hero h1 { font-size: clamp(2rem, 5vw, 3.4rem); font-weight: 750; }
+  .role { color: var(--accent); font-size: 1.1rem; margin: 0.75rem 0 0; font-weight: 500; }
+  .tagline { color: var(--muted); font-size: 1.15rem; max-width: 640px; margin: 1.25rem 0 2rem; }
+  .cta { display: flex; gap: 0.75rem; flex-wrap: wrap; }
+  .btn {
+    display: inline-block;
+    padding: 0.65rem 1.2rem;
+    border-radius: 999px;
+    border: 1px solid var(--line);
+    color: var(--text);
+    font-weight: 500;
+    transition: border-color 0.15s, background 0.15s;
+  }
+  .btn:hover { border-color: var(--accent); text-decoration: none; }
+  .btn.primary { background: var(--accent); color: #0f1410; border-color: var(--accent); }
+  .btn.primary:hover { background: #a3dc9f; }
+
+  .prose p { margin: 0 0 1rem; max-width: 720px; font-size: 1.05rem; }
+
+  .timeline { list-style: none; margin: 0; padding: 0; }
+  .timeline > li {
+    display: grid;
+    grid-template-columns: 180px 1fr;
+    gap: 1.5rem;
+    padding: 1.5rem 0;
+    border-top: 1px solid var(--line);
+  }
+  .timeline > li:first-child { border-top: none; padding-top: 0; }
+  .tl-meta { display: flex; flex-direction: column; gap: 0.2rem; font-size: 0.9rem; }
+  .tl-period { color: var(--accent-2); font-weight: 600; }
+  .tl-body h3 { font-size: 1.1rem; }
+  .org { color: var(--muted); margin: 0.2rem 0 0.6rem; }
+  .tl-body ul { margin: 0; padding-left: 1.1rem; }
+  .tl-body li { margin-bottom: 0.4rem; }
+
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1.25rem; }
+  .card {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 1.4rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+  .card h3 { font-size: 1.1rem; }
+  .card h3 a { color: var(--text); }
+  .card h3 a:hover { color: var(--accent); text-decoration: none; }
+  .card p { margin: 0; }
+  .card ul { margin: 0; padding-left: 1.1rem; color: var(--muted); }
+  .card footer { margin-top: auto; padding-top: 0.5rem; }
+
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 2.5rem; }
+  .edu { margin-bottom: 1.5rem; }
+  .edu h3 { font-size: 1.05rem; }
+  .edu .org { margin-bottom: 0.2rem; }
+  .certs { margin: 0; padding-left: 1.1rem; }
+  .certs li { margin-bottom: 0.5rem; }
+
+  .sub { font-size: 0.95rem; color: var(--muted); margin-bottom: 0.9rem; font-weight: 600; }
+  .pill-list { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 0.5rem; }
+  .pill-list li {
+    padding: 0.4rem 0.85rem;
+    border-radius: 999px;
+    background: var(--card);
+    border: 1px solid var(--line);
+    font-size: 0.9rem;
+  }
+  .pill-list.developing li { border-style: dashed; color: var(--muted); }
+
+  .contact { list-style: none; margin: 0; padding: 0; display: grid; gap: 0.75rem; max-width: 480px; }
+  .contact li { display: grid; grid-template-columns: 90px 1fr; gap: 1rem; }
+
+  .site-footer { border-top: 1px solid var(--line); padding: 1.5rem 0; }
+  .small { font-size: 0.9rem; }
+
+  @media (max-width: 720px) {
+    .timeline > li { grid-template-columns: 1fr; gap: 0.5rem; }
+    .two-col { grid-template-columns: 1fr; gap: 2rem; }
+    .hero { padding: 4rem 0 3.5rem; }
+    nav { display: none; }
+  }
+</style>
